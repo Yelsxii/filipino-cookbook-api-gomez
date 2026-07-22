@@ -77,31 +77,57 @@ A new security improvement was also added:
 ### Security Features Implemented
 - Basic rate limiting for API requests
 
-### Testing the Enhancements
-Follow these steps to verify the new endpoints and the rate-limiting behavior:
+### Testing the Enhancements (Thunder Client)
+Use Thunder Client in VS Code to create and run requests. For each request:
 
-- **Test the random-food endpoint**
-  - Request: `GET /api/foods/random`
-  - Example:
-    ```bash
-    curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" \
-      -H "Accept: application/json" \
-      http://localhost:8000/api/foods/random
-    ```
-  - Expected: a single food JSON object (status `200`).
+- Click **New Request** → set the **Method** and **URL** → open **Headers** and add the required headers → click **Send**.
 
-- **Test the category-foods endpoint**
-  - Request: `GET /api/categories/{id}/foods` (replace `{id}` with a valid category id)
-  - Example:
-    ```bash
-    curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" \
-      -H "Accept: application/json" \
-      http://localhost:8000/api/categories/1/foods
+- **Random food endpoint**
+  - Method: `GET`
+  - URL: `http://localhost:8000/api/foods/random`
+  - Headers:
+    - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+    - `Accept: application/json`
+  - Expected response (HTTP 200):
+    ```json
+    {
+      "food_id": 14,
+      "food_name": "Bulalo",
+      "category_name": "Soup",
+      "origin_name": "Philippines",
+      "instructions": "Boil beef shank and bone marrow until tender. Add corn and vegetables, then simmer before serving.",
+      "ingredients": ["Beef shank","Bone marrow","Cabbage","Corn","Onion","Pechay","Peppercorn"]
+    }
     ```
-  - Expected: an array of foods in that category (status `200`).
+
+- **Category foods endpoint**
+  - Method: `GET`
+  - URL: `http://localhost:8000/api/categories/1/foods` (replace `1` with a valid category id)
+  - Headers:
+    - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+    - `Accept: application/json`
+  - Expected response (HTTP 200):
+    ```json
+    [
+      {
+        "food_id": 11,
+        "food_name": "Lumpiang Shanghai",
+        "category_name": "Appetizer",
+        "origin_name": "Philippines",
+        "instructions": "Mix ground pork, vegetables, and egg. Wrap in spring roll wrappers and deep-fry until golden brown.",
+        "ingredients": ["Carrots","Egg","Garlic","Ground pork","Onion","Spring roll wrapper"]
+      }
+    ]
+    ```
 
 - **Quick rate-limit smoke test**
-  - Send several quick requests to an endpoint (e.g., `GET /api/foods`) and observe whether a `429 Too Many Requests` response appears when limits are exceeded.
+  - Send several quick requests to a single endpoint (e.g., `GET /api/foods`) from Thunder Client using the same headers. If the rate limit is exceeded you should see a `429` response and a JSON error, for example:
+    ```json
+    {
+      "status": "error",
+      "message": "Too many requests. Rate limit exceeded."
+    }
+    ```
 
 ### Enhancement Testing Screenshots
 Random food endpoint test:

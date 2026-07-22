@@ -198,8 +198,8 @@ curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" http://localhost:8000/api/cate
 ![Category Foods Endpoint Test](Screenshots/Category.png)
 
 ## Developer Information
-- Student Name: Your Name
+- Student Name: Lizhary Ylexis Gomez
 - Course and Section: Your Course/Section
-- GitHub Username: Your GitHub Username
+- GitHub Username: Yelsxii
 - Repository Link: https://github.com/Yelsxii/filipino-cookbook-api-gomez.git
 - Date Completed: 2026-07-22

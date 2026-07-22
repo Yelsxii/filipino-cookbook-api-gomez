@@ -185,11 +185,22 @@ return [
 Do not commit `config.php` to Git.
 
 ### 4. Create and import the database
-Open phpMyAdmin or run the MySQL command line. Create the database:
+Create the database and import the SQL file using either phpMyAdmin or the MySQL command-line client.
+
+#### Option 1: Use phpMyAdmin
+- Open phpMyAdmin.
+- Create a new database named `filipino_cookbook_api`.
+- Select the new database.
+- Open the **Import** tab.
+- Upload the `filipino_cookbook_api.sql` file from the project folder.
+- Run the import.
+
+#### Option 2: Use the MySQL command line
+Create the database:
 ```sql
 CREATE DATABASE filipino_cookbook_api;
 ```
-Then import the SQL file:
+Then run this command from the project folder:
 ```bash
 mysql -u YOUR_DB_USER -p filipino_cookbook_api < filipino_cookbook_api.sql
 ```

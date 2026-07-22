@@ -45,8 +45,8 @@ The security enhancement also helps protect the API from excessive requests.
    ```
 
 3. Test the new endpoints:
-   - http://localhost:8000/api/foods/random
-   - http://localhost:8000/api/categories/1/foods
+   - http://localhost:8080/api/foods/random
+   - http://localhost:8080/api/categories/1/foods
 
 4. Test unauthorized access by sending a request without the Authorization header to confirm that the API returns a 401 response.
 

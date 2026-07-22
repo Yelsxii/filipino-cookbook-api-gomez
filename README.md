@@ -81,7 +81,7 @@ Use Thunder Client in VS Code to create and run requests. For each request:
 
 - **Random food endpoint**
   - Method: `GET`
-  - URL: `http://localhost:8000/api/foods/random`
+  - URL: `http://127.0.0.1:8080/api/foods/random`
   - Headers:
     - `Authorization: Bearer YOUR_API_TOKEN`
     - `Accept: application/json`
@@ -99,7 +99,7 @@ Use Thunder Client in VS Code to create and run requests. For each request:
 
 - **Category foods endpoint**
   - Method: `GET`
-  - URL: `http://localhost:8000/api/categories/1/foods` (replace `1` with a valid category id)
+  - URL: `http://127.0.0.1:8080/api/categories/1/foods` (replace `1` with a valid category id)
   - Headers:
     - `Authorization: Bearer YOUR_API_TOKEN`
     - `Accept: application/json`
@@ -267,7 +267,7 @@ Required headers:
 - `Accept: application/json`
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods`
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods`
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -300,7 +300,7 @@ Path parameter:
 - `id` — numeric food ID
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/11` (replace `11` with the desired id)
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods/11` (replace `11` with the desired id)
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -331,7 +331,7 @@ Path parameter:
 - `name` — food search term
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/search/adobo` (replace `adobo` with your search term)
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods/search/adobo` (replace `adobo` with your search term)
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -357,7 +357,7 @@ Example response:
 Description: Returns all food categories.
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/categories`
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/categories`
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -380,7 +380,7 @@ Path parameter:
 - `id` — numeric category ID
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/categories/1/foods` (replace `1` with a valid category id)
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/categories/1/foods` (replace `1` with a valid category id)
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -410,7 +410,7 @@ Possible errors:
 Description: Returns one randomly selected food item.
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/random`
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods/random`
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -434,7 +434,7 @@ Example response:
 Description: Returns all ingredients in the database.
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/ingredients`
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/ingredients`
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
@@ -458,7 +458,7 @@ Required headers:
 - `Content-Type: application/json`
 
 Thunder Client / Postman steps:
-- Create a new request → Method: `POST` → URL: `http://localhost:8000/api/foods`
+- Create a new request → Method: `POST` → URL: `http://127.0.0.1:8080/api/foods`
 - Headers:
   - `Authorization: Bearer YOUR_API_TOKEN`
   - `Content-Type: application/json`

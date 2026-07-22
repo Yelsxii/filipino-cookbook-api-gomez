@@ -252,10 +252,12 @@ Required headers:
 - `Authorization: Bearer dmmmsu-cookbook-token-2026`
 - `Accept: application/json`
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/foods
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods`
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example successful response:
 ```json
@@ -283,10 +285,12 @@ Description: Returns the full details for one food item, including ingredient na
 Path parameter:
 - `id` — numeric food ID
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/foods/11
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/11` (replace `11` with the desired id)
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example successful response:
 ```json
@@ -312,10 +316,12 @@ Description: Finds foods whose name contains the search term.
 Path parameter:
 - `name` — food search term
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/foods/search/adobo
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/search/adobo` (replace `adobo` with your search term)
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example response:
 ```json
@@ -336,10 +342,12 @@ Example response:
 ### GET /api/categories
 Description: Returns all food categories.
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/categories
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/categories`
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example response:
 ```json
@@ -357,10 +365,12 @@ Description: Returns foods that belong to the selected category.
 Path parameter:
 - `id` — numeric category ID
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/categories/1/foods
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/categories/1/foods` (replace `1` with a valid category id)
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example response:
 ```json
@@ -385,10 +395,12 @@ Possible errors:
 ### GET /api/foods/random
 Description: Returns one randomly selected food item.
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/foods/random
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/random`
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example response:
 ```json
@@ -407,10 +419,12 @@ Example response:
 ### GET /api/ingredients
 Description: Returns all ingredients in the database.
 
-Example request:
-```bash
-curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" http://localhost:8000/api/ingredients
-```
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://localhost:8000/api/ingredients`
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Accept: application/json`
+- Click **Send** and inspect the JSON response shown below.
 
 Example response:
 ```json
@@ -429,19 +443,21 @@ Required headers:
 - `Authorization: Bearer dmmmsu-cookbook-token-2026`
 - `Content-Type: application/json`
 
-Example request:
-```bash
-curl -X POST http://localhost:8000/api/foods \
-  -H "Authorization: Bearer dmmmsu-cookbook-token-2026" \
-  -H "Content-Type: application/json" \
-  -d '{
+Thunder Client / Postman steps:
+- Create a new request → Method: `POST` → URL: `http://localhost:8000/api/foods`
+- Headers:
+  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Content-Type: application/json`
+- Body: select raw JSON and paste the payload below, then click **Send**.
+  ```json
+  {
     "food_name": "New Dish",
     "category_id": 1,
     "origin_id": 1,
     "instructions": "Prepare and cook.",
     "ingredient_ids": [1, 2]
-  }'
-```
+  }
+  ```
 
 Success response:
 ```json

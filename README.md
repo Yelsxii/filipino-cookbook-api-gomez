@@ -453,7 +453,7 @@ Use your own MySQL credentials and the same token value in requests.
 
 ## Developer Information
 - Student Name: Lizhary Ylexis Gomez
- - Course and Section: BS INFORMATIN TECHNOLOGY 4B
+ - Course and Section: Information Technology - 4B
 - GitHub Username: Yelsxii
 - Repository Link: https://github.com/Yelsxii/filipino-cookbook-api-gomez.git
 - Date Completed: 2026-07-22

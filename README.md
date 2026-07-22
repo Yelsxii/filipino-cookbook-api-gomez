@@ -208,12 +208,12 @@ mysql -u YOUR_DB_USER -p filipino_cookbook_api < filipino_cookbook_api.sql
 ### 5. Start the API server
 From the project root directory:
 ```bash
-php -S localhost:8000 -t public
+php -S 127.0.0.1:8080 -t public
 ```
 
 ### 6. Confirm the API is running
 Open in a browser or Postman:
-- `http://localhost:8000/`
+- `http://127.0.0.1:8080/`
 You should see a JSON welcome message.
 
 ## Database Setup
@@ -231,8 +231,14 @@ You should see a JSON welcome message.
 - `foods -> food_ingredients <- ingredients`
 
 ## Base URL
-For local use:
-- `http://localhost:8000`
+If you run the PHP built-in server from the project root, the base URL is:
+- `http://127.0.0.1:8080/api`
+
+A sample endpoint URL is:
+- `http://127.0.0.1:8080/api/foods/random`
+
+If you run the project under a local web server like XAMPP and the repository is placed inside `htdocs`, the base URL can be:
+- `http://localhost/filipino-cookbook-api/public/api`
 
 API endpoints begin with `/api`.
 
@@ -495,13 +501,13 @@ These are the exact steps another student should follow to verify the API.
 
 1. Start the local server:
    ```bash
-   php -S localhost:8000 -t public
+   php -S 127.0.0.1:8080 -t public
    ```
 
 2. Open Postman, Thunder Client, or use `curl` from a terminal.
 3. Create a new request and configure it precisely:
    - **Method:** Choose the correct HTTP method for the endpoint (GET, POST).
-   - **URL:** Paste the full endpoint URL, for example `http://localhost:8000/api/foods` or `http://localhost:8000/api/foods/11`.
+   - **URL:** Paste the full endpoint URL, for example `http://127.0.0.1:8080/api/foods` or `http://127.0.0.1:8080/api/foods/11`.
    - **Headers:** Add required headers:
      - `Authorization: Bearer YOUR_API_TOKEN`
      - `Accept: application/json`
@@ -520,15 +526,15 @@ These are the exact steps another student should follow to verify the API.
    - **Verify:** Confirm the response status code (200/201 for success), `Content-Type: application/json`, and the JSON body matches expected structure or error messages described below.
 
 ### Test cases to run
-- `GET http://localhost:8000/api/foods`
-- `GET http://localhost:8000/api/foods/11`
-- `GET http://localhost:8000/api/foods/random`
-- `GET http://localhost:8000/api/foods/search/lumpia`
-- `GET http://localhost:8000/api/categories`
-- `GET http://localhost:8000/api/categories/1/foods`
-- `GET http://localhost:8000/api/ingredients`
-- `POST http://localhost:8000/api/foods` with a valid JSON body
-- `GET http://localhost:8000/api/foods` without the Authorization header to confirm `401`
+- `GET http://127.0.0.1:8080/api/foods`
+- `GET http://127.0.0.1:8080/api/foods/11`
+- `GET http://127.0.0.1:8080/api/foods/random`
+- `GET http://127.0.0.1:8080/api/foods/search/lumpia`
+- `GET http://127.0.0.1:8080/api/categories`
+- `GET http://127.0.0.1:8080/api/categories/1/foods`
+- `GET http://127.0.0.1:8080/api/ingredients`
+- `POST http://127.0.0.1:8080/api/foods` with a valid JSON body
+- `GET http://127.0.0.1:8080/api/foods` without the Authorization header to confirm `401`
 
 ## Common Error Responses (examples)
 These JSON examples show typical error responses you can expect and how to reproduce them.

@@ -416,11 +416,26 @@ These are the exact steps another student should follow to verify the API.
    php -S localhost:8000 -t public
    ```
 
-2. Open Postman or Thunder Client.
-3. Create a request and set the URL to one of the endpoints.
-4. Add the Authorization header:
-   - `Authorization: Bearer dmmmsu-cookbook-token-2026`
-5. Send the request and confirm you receive JSON.
+2. Open Postman, Thunder Client, or use `curl` from a terminal.
+3. Create a new request and configure it precisely:
+   - **Method:** Choose the correct HTTP method for the endpoint (GET, POST).
+   - **URL:** Paste the full endpoint URL, for example `http://localhost:8000/api/foods` or `http://localhost:8000/api/foods/11`.
+   - **Headers:** Add required headers:
+     - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+     - `Accept: application/json`
+     - For `POST` requests also add `Content-Type: application/json`.
+   - **Body (POST):** Switch to raw JSON and paste a valid JSON payload. Example:
+     ```json
+     {
+       "food_name": "New Dish",
+       "category_id": 1,
+       "origin_id": 1,
+       "instructions": "Prepare and cook.",
+       "ingredient_ids": [1, 2]
+     }
+     ```
+   - **Send:** Click `Send` (or run the `curl` command) and inspect the response.
+   - **Verify:** Confirm the response status code (200/201 for success), `Content-Type: application/json`, and the JSON body matches expected structure or error messages described below.
 
 ### Test cases to run
 - `GET http://localhost:8000/api/foods`

@@ -1,0 +1,62 @@
+{
+  "_type": "collection",
+  "name": "Filipino Cookbook API - Classroom",
+  "version": "1.0.0",
+  "requests": [
+    {
+      "name": "Get all foods",
+      "method": "GET",
+      "url": "http://localhost:8000/api/foods",
+      "headers": [
+        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Accept", "value": "application/json" }
+      ]
+    },
+    {
+      "name": "Get food by id",
+      "method": "GET",
+      "url": "http://localhost:8000/api/foods/11",
+      "headers": [
+        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Accept", "value": "application/json" }
+      ]
+    },
+    {
+      "name": "Get random food",
+      "method": "GET",
+      "url": "http://localhost:8000/api/foods/random",
+      "headers": [
+        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Accept", "value": "application/json" }
+      ]
+    },
+    {
+      "name": "Get foods by category",
+      "method": "GET",
+      "url": "http://localhost:8000/api/categories/1/foods",
+      "headers": [
+        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Accept", "value": "application/json" }
+      ]
+    },
+    {
+      "name": "Create new food (example)",
+      "method": "POST",
+      "url": "http://localhost:8000/api/foods",
+      "headers": [
+        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mode": "raw",
+        "raw": {
+          "food_name": "New Dish",
+          "category_id": 1,
+          "origin_id": 1,
+          "instructions": "Prepare and cook.",
+          "ingredient_ids": [1,2]
+        }
+      }
+    }
+  ]
+}

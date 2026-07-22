@@ -506,6 +506,36 @@ These are the exact steps another student should follow to verify the API.
 - `POST http://localhost:8000/api/foods` with a valid JSON body
 - `GET http://localhost:8000/api/foods` without the Authorization header to confirm `401`
 
+## Common Error Responses (examples)
+These JSON examples show typical error responses you can expect and how to reproduce them.
+
+- Unauthorized (missing/invalid token) — HTTP 401
+  ```json
+  {
+    "status": "error",
+    "message": "Unauthorized access. Valid API token is required."
+  }
+  ```
+  Reproduce: send any `/api` request without the `Authorization: Bearer <token>` header.
+
+- Not Found — HTTP 404
+  ```json
+  {
+    "status": "error",
+    "message": "Food not found"
+  }
+  ```
+  Reproduce: request a non-existing resource, for example `GET /api/foods/99999` (replace `99999` with an id that doesn't exist).
+
+- Rate limit exceeded — HTTP 429
+  ```json
+  {
+    "status": "error",
+    "message": "Too many requests. Please try again later."
+  }
+  ```
+  Reproduce: send many requests quickly to any `/api` endpoint (rate limit is configured in `public/index.php`).
+
 ### What to change in the local setup
 Open `config.php` and update:
 - `db_host`
@@ -515,6 +545,20 @@ Open `config.php` and update:
 - `api_token`
 
 Use your own MySQL credentials and the same token value in requests.
+
+Recommended token for class testing: `dmmmsu-cookbook-token-2026` (optional — classmates may use this value in their local `config.php` for testing).
+
+Quick reminder: copy `config.example.php` to `config.php` before running the server:
+
+Windows:
+```powershell
+copy config.example.php config.php
+```
+
+Linux / macOS:
+```bash
+cp config.example.php config.php
+```
 
 ## Testing Evidence (All Endpoints)
 Screenshots and test notes for all endpoints are available in the `Screenshots/` folder. The enhancement-specific screenshots are shown above in the **Optional API Enhancements** section.

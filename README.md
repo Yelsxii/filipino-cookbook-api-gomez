@@ -262,6 +262,7 @@ Each endpoint is documented below with exact request details.
 ### GET /api/foods
 **Endpoint:**
 GET /api/foods
+
 **Description:**
 Returns all foods in the database with category, origin, instructions, and ingredient list.
 
@@ -307,6 +308,7 @@ Possible errors:
 ### GET /api/foods/{id}
 **Endpoint:**
 GET /api/foods/{id}
+
 **Description:**
 Returns the full details for one food item, including ingredient names.
 

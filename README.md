@@ -75,8 +75,40 @@ A new security improvement was also added:
 - `GET /api/categories/{id}/foods`
 
 ### Security Features Implemented
-- Bearer token authentication for `/api` routes
 - Basic rate limiting for API requests
+
+### Testing the Enhancements
+Follow these steps to verify the new endpoints and the rate-limiting behavior:
+
+- **Test the random-food endpoint**
+  - Request: `GET /api/foods/random`
+  - Example:
+    ```bash
+    curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" \
+      -H "Accept: application/json" \
+      http://localhost:8000/api/foods/random
+    ```
+  - Expected: a single food JSON object (status `200`).
+
+- **Test the category-foods endpoint**
+  - Request: `GET /api/categories/{id}/foods` (replace `{id}` with a valid category id)
+  - Example:
+    ```bash
+    curl -H "Authorization: Bearer dmmmsu-cookbook-token-2026" \
+      -H "Accept: application/json" \
+      http://localhost:8000/api/categories/1/foods
+    ```
+  - Expected: an array of foods in that category (status `200`).
+
+- **Quick rate-limit smoke test**
+  - Send several quick requests to an endpoint (e.g., `GET /api/foods`) and observe whether a `429 Too Many Requests` response appears when limits are exceeded.
+
+### Enhancement Testing Screenshots
+Random food endpoint test:
+![Random Food Endpoint Test](Screenshots/Random.png)
+
+Category foods endpoint test:
+![Category Foods Endpoint Test](Screenshots/Category.png)
 
 ## Repository Contents
 The repository contains:
@@ -458,13 +490,8 @@ Open `config.php` and update:
 
 Use your own MySQL credentials and the same token value in requests.
 
-## Testing Evidence
-
-### Random Food Endpoint Test
-![Random Food Endpoint Test](Screenshots/Random.png)
-
-### Category Foods Endpoint Test
-![Category Foods Endpoint Test](Screenshots/Category.png)
+## Testing Evidence (All Endpoints)
+Screenshots and test notes for all endpoints are available in the `Screenshots/` folder. The enhancement-specific screenshots are shown above in the **Optional API Enhancements** section.
 
 ## Developer Information
 - Student Name: Lizhary Ylexis Gomez

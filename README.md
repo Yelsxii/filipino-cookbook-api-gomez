@@ -86,7 +86,7 @@ Use Thunder Client in VS Code to create and run requests. For each request:
   - Method: `GET`
   - URL: `http://localhost:8000/api/foods/random`
   - Headers:
-    - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+    - `Authorization: Bearer YOUR_API_TOKEN`
     - `Accept: application/json`
   - Expected response (HTTP 200):
     ```json
@@ -104,7 +104,7 @@ Use Thunder Client in VS Code to create and run requests. For each request:
   - Method: `GET`
   - URL: `http://localhost:8000/api/categories/1/foods` (replace `1` with a valid category id)
   - Headers:
-    - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+    - `Authorization: Bearer YOUR_API_TOKEN`
     - `Accept: application/json`
   - Expected response (HTTP 200):
     ```json
@@ -182,7 +182,7 @@ return [
     'db_name' => 'filipino_cookbook_api',
     'db_user' => 'root',
     'db_pass' => '',
-    'api_token' => 'dmmmsu-cookbook-token-2026',
+    'api_token' => 'YOUR_API_TOKEN',
 ];
 ```
 Do not commit `config.php` to Git.
@@ -233,7 +233,7 @@ All `/api` requests require a Bearer token header.
 
 Header:
 ```text
-Authorization: Bearer dmmmsu-cookbook-token-2026
+Authorization: Bearer YOUR_API_TOKEN
 ```
 
 If the token is missing or invalid, the API returns:
@@ -249,13 +249,13 @@ Each endpoint is documented below with exact request details.
 Description: Returns all foods in the database with category, origin, instructions, and ingredient list.
 
 Required headers:
-- `Authorization: Bearer dmmmsu-cookbook-token-2026`
+- `Authorization: Bearer YOUR_API_TOKEN`
 - `Accept: application/json`
 
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods`
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -288,7 +288,7 @@ Path parameter:
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/11` (replace `11` with the desired id)
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -319,7 +319,7 @@ Path parameter:
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/search/adobo` (replace `adobo` with your search term)
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -345,7 +345,7 @@ Description: Returns all food categories.
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/categories`
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -368,7 +368,7 @@ Path parameter:
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/categories/1/foods` (replace `1` with a valid category id)
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -398,7 +398,7 @@ Description: Returns one randomly selected food item.
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/foods/random`
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -422,7 +422,7 @@ Description: Returns all ingredients in the database.
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://localhost:8000/api/ingredients`
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
@@ -440,13 +440,13 @@ Example response:
 Description: Adds a new food record with category, origin, instructions, and ingredients.
 
 Required headers:
-- `Authorization: Bearer dmmmsu-cookbook-token-2026`
+- `Authorization: Bearer YOUR_API_TOKEN`
 - `Content-Type: application/json`
 
 Thunder Client / Postman steps:
 - Create a new request → Method: `POST` → URL: `http://localhost:8000/api/foods`
 - Headers:
-  - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+  - `Authorization: Bearer YOUR_API_TOKEN`
   - `Content-Type: application/json`
 - Body: select raw JSON and paste the payload below, then click **Send**.
   ```json
@@ -495,7 +495,7 @@ These are the exact steps another student should follow to verify the API.
    - **Method:** Choose the correct HTTP method for the endpoint (GET, POST).
    - **URL:** Paste the full endpoint URL, for example `http://localhost:8000/api/foods` or `http://localhost:8000/api/foods/11`.
    - **Headers:** Add required headers:
-     - `Authorization: Bearer dmmmsu-cookbook-token-2026`
+     - `Authorization: Bearer YOUR_API_TOKEN`
      - `Accept: application/json`
      - For `POST` requests also add `Content-Type: application/json`.
    - **Body (POST):** Switch to raw JSON and paste a valid JSON payload. Example:
@@ -562,7 +562,6 @@ Open `config.php` and update:
 
 Use your own MySQL credentials and the same token value in requests.
 
-Recommended token for class testing: `dmmmsu-cookbook-token-2026` (optional — classmates may use this value in their local `config.php` for testing).
 
 Quick reminder: copy `config.example.php` to `config.php` before running the server:
 

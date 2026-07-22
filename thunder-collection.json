@@ -8,7 +8,7 @@
       "method": "GET",
       "url": "http://localhost:8000/api/foods",
       "headers": [
-        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Authorization", "value": "Bearer YOUR_API_TOKEN" },
         { "key": "Accept", "value": "application/json" }
       ]
     },
@@ -17,7 +17,7 @@
       "method": "GET",
       "url": "http://localhost:8000/api/foods/11",
       "headers": [
-        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Authorization", "value": "Bearer YOUR_API_TOKEN" },
         { "key": "Accept", "value": "application/json" }
       ]
     },
@@ -26,7 +26,7 @@
       "method": "GET",
       "url": "http://localhost:8000/api/foods/random",
       "headers": [
-        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Authorization", "value": "Bearer YOUR_API_TOKEN" },
         { "key": "Accept", "value": "application/json" }
       ]
     },
@@ -35,7 +35,7 @@
       "method": "GET",
       "url": "http://localhost:8000/api/categories/1/foods",
       "headers": [
-        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Authorization", "value": "Bearer YOUR_API_TOKEN" },
         { "key": "Accept", "value": "application/json" }
       ]
     },
@@ -44,7 +44,7 @@
       "method": "POST",
       "url": "http://localhost:8000/api/foods",
       "headers": [
-        { "key": "Authorization", "value": "Bearer dmmmsu-cookbook-token-2026" },
+        { "key": "Authorization", "value": "Bearer YOUR_API_TOKEN" },
         { "key": "Content-Type", "value": "application/json" }
       ],
       "body": {

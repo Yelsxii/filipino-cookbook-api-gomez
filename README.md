@@ -620,13 +620,21 @@ These are the exact steps another student should follow to verify the API.
 
 2. Open Postman, Thunder Client, or use `curl` from a terminal.
 3. Create a new request and configure it precisely:
-   - **Method:** Choose the correct HTTP method for the endpoint (GET, POST).
-   - **URL:** Paste the full endpoint URL, for example `http://127.0.0.1:8080/api/foods` or `http://127.0.0.1:8080/api/foods/11`.
-   - **Headers:** Add required headers:
+   - **Method:** Choose the correct HTTP method for the endpoint.
+     - `GET` for read-only endpoints
+     - `POST` only for creating a new food record
+   - **URL:** Paste the full endpoint URL exactly.
+     - Example GET URLs:
+       - `http://127.0.0.1:8080/api/foods`
+       - `http://127.0.0.1:8080/api/foods/11`
+       - `http://127.0.0.1:8080/api/foods/random`
+     - Example POST URL:
+       - `http://127.0.0.1:8080/api/foods`
+   - **Headers:** Add the required headers for every request:
      - `Authorization: Bearer YOUR_API_TOKEN`
      - `Accept: application/json`
-     - For `POST` requests also add `Content-Type: application/json`.
-   - **Body (POST):** Switch to raw JSON and paste a valid JSON payload. Example:
+     - For `POST` requests only: `Content-Type: application/json`
+   - **Body (POST only):** If the endpoint is `POST /api/foods`, switch to raw JSON and paste a valid payload.
      ```json
      {
        "food_name": "New Dish",
@@ -636,8 +644,11 @@ These are the exact steps another student should follow to verify the API.
        "ingredient_ids": [1, 2]
      }
      ```
-   - **Send:** Click `Send` (or run the `curl` command) and inspect the response.
-   - **Verify:** Confirm the response status code (200/201 for success), `Content-Type: application/json`, and the JSON body matches expected structure or error messages described below.
+   - **Send:** Click `Send` or execute the equivalent `curl` command.
+   - **Verify the response:**
+     - Status code should be `200` or `201` for success.
+     - Response header should include `Content-Type: application/json`.
+     - JSON body should match the expected success or error structure described in the endpoint documentation.
 
 ### Test cases to run
 - `GET http://127.0.0.1:8080/api/foods`

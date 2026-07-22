@@ -66,9 +66,6 @@ A new security improvement was also added:
 
 ### Files Modified for Enhancements
 - `public/index.php`
-- `README.md`
-- `config.example.php`
-- `.gitignore`
 
 ### Endpoints Added
 - `GET /api/foods/random`

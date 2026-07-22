@@ -260,17 +260,19 @@ Each endpoint is documented below with exact request details.
 ---
 
 ### GET /api/foods
+Endpoint:
+GET /api/foods
 Description: Returns all foods in the database with category, origin, instructions, and ingredient list.
 
 Required headers:
 - `Authorization: Bearer YOUR_API_TOKEN`
 - `Accept: application/json`
 
+Example request:
+http://127.0.0.1:8080/api/foods
+
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods`
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example successful response:
@@ -294,16 +296,18 @@ Possible errors:
 ---
 
 ### GET /api/foods/{id}
+Endpoint:
+GET /api/foods/{id}
 Description: Returns the full details for one food item, including ingredient names.
 
 Path parameter:
 - `id` — numeric food ID
 
+Example request:
+http://127.0.0.1:8080/api/foods/11 (replace `11` with the desired id)
+
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods/11` (replace `11` with the desired id)
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example successful response:
@@ -325,16 +329,18 @@ Error responses:
 ---
 
 ### GET /api/foods/search/{name}
+Endpoint:
+GET /api/foods/search/{name}
 Description: Finds foods whose name contains the search term.
 
 Path parameter:
 - `name` — food search term
 
+Example request:
+http://127.0.0.1:8080/api/foods/search/adobo (replace `adobo` with your search term)
+
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods/search/adobo` (replace `adobo` with your search term)
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example response:
@@ -354,13 +360,15 @@ Example response:
 ---
 
 ### GET /api/categories
+Endpoint:
+GET /api/categories
 Description: Returns all food categories.
+
+Example request:
+http://127.0.0.1:8080/api/categories
 
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/categories`
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example response:
@@ -374,16 +382,18 @@ Example response:
 ---
 
 ### GET /api/categories/{id}/foods
+Endpoint:
+GET /api/categories/{id}/foods
 Description: Returns foods that belong to the selected category.
 
 Path parameter:
 - `id` — numeric category ID
 
+Example request:
+http://127.0.0.1:8080/api/categories/1/foods (replace `1` with a valid category id)
+
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/categories/1/foods` (replace `1` with a valid category id)
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example response:
@@ -407,13 +417,15 @@ Possible errors:
 ---
 
 ### GET /api/foods/random
+Endpoint:
+GET /api/foods/random
 Description: Returns one randomly selected food item.
+
+Example request:
+http://127.0.0.1:8080/api/foods/random
 
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/foods/random`
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example response:
@@ -431,13 +443,15 @@ Example response:
 ---
 
 ### GET /api/ingredients
+Endpoint:
+GET /api/ingredients
 Description: Returns all ingredients in the database.
+
+Example request:
+http://127.0.0.1:8080/api/ingredients
 
 Thunder Client / Postman steps:
 - Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api/ingredients`
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Accept: application/json`
 - Click **Send** and inspect the JSON response shown below.
 
 Example response:
@@ -451,17 +465,19 @@ Example response:
 ---
 
 ### POST /api/foods
+Endpoint:
+POST /api/foods
 Description: Adds a new food record with category, origin, instructions, and ingredients.
 
 Required headers:
 - `Authorization: Bearer YOUR_API_TOKEN`
 - `Content-Type: application/json`
 
+Example request:
+http://127.0.0.1:8080/api/foods
+
 Thunder Client / Postman steps:
 - Create a new request → Method: `POST` → URL: `http://127.0.0.1:8080/api/foods`
-- Headers:
-  - `Authorization: Bearer YOUR_API_TOKEN`
-  - `Content-Type: application/json`
 - Body: select raw JSON and paste the payload below, then click **Send**.
   ```json
   {

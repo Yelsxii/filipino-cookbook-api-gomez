@@ -262,7 +262,8 @@ Each endpoint is documented below with exact request details.
 ### GET /api/foods
 **Endpoint:**
 GET /api/foods
-**Description:** Returns all foods in the database with category, origin, instructions, and ingredient list.
+**Description:**
+Returns all foods in the database with category, origin, instructions, and ingredient list.
 
 **Required headers:**
 - `Authorization: Bearer YOUR_API_TOKEN`
@@ -306,7 +307,8 @@ Possible errors:
 ### GET /api/foods/{id}
 **Endpoint:**
 GET /api/foods/{id}
-**Description:** Returns the full details for one food item, including ingredient names.
+**Description:**
+Returns the full details for one food item, including ingredient names.
 
 **Path parameter:**
 - `id` — numeric food ID
@@ -351,7 +353,8 @@ Error responses:
 ### GET /api/foods/search/{name}
 **Endpoint:**
 GET /api/foods/search/{name}
-**Description:** Finds foods whose name contains the search term.
+**Description:**
+Finds foods whose name contains the search term.
 
 **Path parameter:**
 - `name` — food search term
@@ -394,7 +397,8 @@ Thunder Client / Postman steps:
 ### GET /api/categories
 **Endpoint:**
 GET /api/categories
-**Description:** Returns all food categories.
+**Description:**
+Returns all food categories.
 
 **Required headers:**
 - `Authorization: Bearer YOUR_API_TOKEN`
@@ -428,7 +432,8 @@ Thunder Client / Postman steps:
 ### GET /api/categories/{id}/foods
 **Endpoint:**
 GET /api/categories/{id}/foods
-**Description:** Returns foods that belong to the selected category.
+**Description:**
+Returns foods that belong to the selected category.
 
 **Path parameter:**
 - `id` — numeric category ID
@@ -475,7 +480,8 @@ Possible errors:
 ### GET /api/foods/random
 **Endpoint:**
 GET /api/foods/random
-**Description:** Returns one randomly selected food item.
+**Description:**
+Returns one randomly selected food item.
 
 **Required headers:**
 - `Authorization: Bearer YOUR_API_TOKEN`
@@ -513,7 +519,8 @@ Thunder Client / Postman steps:
 ### GET /api/ingredients
 **Endpoint:**
 GET /api/ingredients
-**Description:** Returns all ingredients in the database.
+**Description:**
+Returns all ingredients in the database.
 
 **Required headers:**
 - `Authorization: Bearer YOUR_API_TOKEN`
@@ -547,7 +554,8 @@ Thunder Client / Postman steps:
 ### POST /api/foods
 **Endpoint:**
 POST /api/foods
-**Description:** Adds a new food record with category, origin, instructions, and ingredients.
+**Description:**
+Adds a new food record with category, origin, instructions, and ingredients.
 
 **Required headers:**
 - `Authorization: Bearer YOUR_API_TOKEN`

@@ -176,13 +176,13 @@ Update `config.php` with your local database credentials. Example:
 ```php
 return [
     'db_host' => 'localhost',
-    'db_name' => 'filipino_cookbook_api',
+    'db_name' => 'filipino_cookbook_api_surname',
     'db_user' => 'root',
     'db_pass' => '',
     'api_token' => 'YOUR_API_TOKEN',
 ];
 ```
-Do not commit `config.php` to Git.
+
 
 ### 4. Create and import the database
 Create the database and import the SQL file using either phpMyAdmin or the MySQL command-line client.

@@ -3,13 +3,14 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2026 at 02:46 PM
+-- Generation Time: Jul 28, 2026 at 02:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -52,7 +53,7 @@ INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 
 CREATE TABLE `foods` (
   `food_id` int(11) NOT NULL,
-  `food_name` varchar(100) NOT NULL,
+  `food_name` varchar(150) NOT NULL,
   `category_id` int(11) NOT NULL,
   `origin_id` int(11) NOT NULL,
   `instructions` text NOT NULL
@@ -79,8 +80,7 @@ INSERT INTO `foods` (`food_id`, `food_name`, `category_id`, `origin_id`, `instru
 (14, 'Bulalo', 6, 4, 'Boil beef shank and bone marrow until tender. Add corn and vegetables, then simmer before serving.'),
 (15, 'Halo-Halo', 2, 4, 'Layer sweet ingredients in a glass. Add crushed ice, evaporated milk, leche flan, and ube ice cream.'),
 (16, 'Dinengdeng', 3, 4, 'Boil vegetables with bagoong-based broth and add grilled fish before serving.'),
-(17, 'Dinengdeng', 3, 4, 'Boil vegetables with bagoong-based broth and add grilled fish before serving.'),
-(18, 'Buldak', 4, 4, 'Boil pasta and mix all seasosings.'),
+(18, 'Tortang Talong', 4, 4, 'Grill the eggplant until soft, peel the skin, flatten it, dip it in beaten egg, and fry until golden brown.'),
 (19, 'Boiled Egg', 1, 1, 'Boil the egg until cooked.');
 
 -- --------------------------------------------------------
@@ -209,11 +209,12 @@ INSERT INTO `food_ingredients` (`food_id`, `ingredient_id`) VALUES
 (16, 10),
 (16, 15),
 (16, 22),
-(17, 10),
-(17, 15),
-(17, 22),
-(18, 10),
-(19, 4);
+(18, 18),
+(18, 22),
+(18, 23),
+(18, 40),
+(18, 51),
+(19, 22);
 
 -- --------------------------------------------------------
 

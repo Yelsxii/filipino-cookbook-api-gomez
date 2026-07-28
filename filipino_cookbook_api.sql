@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS filipino_cookbook_api;
-USE filipino_cookbook_api;
-
 CREATE TABLE IF NOT EXISTS categories (
   category_id INT PRIMARY KEY,
   category_name VARCHAR(100) NOT NULL

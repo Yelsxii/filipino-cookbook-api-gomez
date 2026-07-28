@@ -189,7 +189,7 @@ Create the database and import the SQL file using either phpMyAdmin or the MySQL
 
 #### Option 1: Use phpMyAdmin
 - Open phpMyAdmin.
-- Create a new database named `filipino_cookbook_api`.
+- Create a new database named `filipino_cookbook_api_surname`.
 - Select the new database.
 - Open the **Import** tab.
 - Upload the `filipino_cookbook_api.sql` file from the project folder.
@@ -198,11 +198,11 @@ Create the database and import the SQL file using either phpMyAdmin or the MySQL
 #### Option 2: Use the MySQL command line
 Create the database:
 ```sql
-CREATE DATABASE filipino_cookbook_api;
+CREATE DATABASE filipino_cookbook_api_surname;
 ```
 Then run this command from the project folder:
 ```bash
-mysql -u YOUR_DB_USER -p filipino_cookbook_api < filipino_cookbook_api.sql
+mysql -u YOUR_DB_USER -p filipino_cookbook_api_surname < filipino_cookbook_api.sql
 ```
 
 ### 5. Start the API server

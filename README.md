@@ -217,7 +217,7 @@ Open in a browser or Postman:
 You should see a JSON welcome message.
 
 ## Database Setup
-- Database name: `filipino_cookbook_api`
+- Database name: `filipino_cookbook_api_surname`
 - SQL file: `filipino_cookbook_api.sql`
 - Tables:
   - `categories`

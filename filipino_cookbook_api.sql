@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2026 at 02:54 PM
+-- Generation Time: Jul 28, 2026 at 02:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -79,9 +79,9 @@ INSERT INTO `foods` (`food_id`, `food_name`, `category_id`, `origin_id`, `instru
 (13, 'Chicken Inasal', 3, 1, 'Marinate chicken in calamansi, vinegar, garlic, ginger, and lemongrass. Grill while brushing with annatto oil.'),
 (14, 'Bulalo', 6, 4, 'Boil beef shank and bone marrow until tender. Add corn and vegetables, then simmer before serving.'),
 (15, 'Halo-Halo', 2, 4, 'Layer sweet ingredients in a glass. Add crushed ice, evaporated milk, leche flan, and ube ice cream.'),
-(16, 'Dinengdeng', 3, 4, 'Boil vegetables with bagoong-based broth and add grilled fish before serving.'),
+(16, 'Dinengdeng', 7, 3, 'Boil the vegetables in a bagoong-based broth, then add grilled fish before serving.'),
 (18, 'Tortang Talong', 4, 4, 'Grill the eggplant until soft, peel the skin, flatten it, dip it in beaten egg, and fry until golden brown.'),
-(19, 'Boiled Egg', 1, 1, 'Boil the egg until cooked.');
+(19, 'Boiled Egg', 1, 4, 'Place the egg in water, bring it to a boil, and cook until the desired doneness is reached.');
 
 -- --------------------------------------------------------
 
@@ -206,9 +206,13 @@ INSERT INTO `food_ingredients` (`food_id`, `ingredient_id`) VALUES
 (15, 58),
 (15, 59),
 (15, 63),
-(16, 10),
-(16, 15),
-(16, 22),
+(16, 2),
+(16, 23),
+(16, 39),
+(16, 56),
+(16, 57),
+(16, 61),
+(16, 65),
 (18, 18),
 (18, 22),
 (18, 23),
@@ -261,6 +265,7 @@ INSERT INTO `ingredients` (`ingredient_id`, `ingredient_name`) VALUES
 (27, 'Ginger'),
 (28, 'Green chili'),
 (29, 'Green papaya'),
+(65, 'Grilled fish'),
 (30, 'Ground pork'),
 (31, 'Ground rice'),
 (32, 'Kangkong'),

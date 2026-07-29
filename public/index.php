@@ -214,8 +214,15 @@ $app->add(function (Request $request, $handler) {
     return $handler->handle($request);
 });
 
-// Public welcome route does not require token.
+// Public root route redirects to the API welcome endpoint.
 $app->get('/', function (Request $request, Response $response): Response {
+    return $response
+        ->withHeader('Location', '/api')
+        ->withStatus(302);
+});
+
+// Public welcome endpoint for the API.
+$app->get('/api', function (Request $request, Response $response): Response {
     $payload = [
         'message' => 'Welcome to the Secured Filipino Cookbook API',
         'note' => 'Use a valid Bearer token to access /api endpoints.'

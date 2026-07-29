@@ -213,7 +213,8 @@ php -S 127.0.0.1:8080 -t public
 
 ### 6. Confirm the API is running
 Open in a browser or Postman:
-- `http://127.0.0.1:8080/`
+- `http://127.0.0.1:8080/` (this will redirect to the welcome endpoint)
+- `http://127.0.0.1:8080/api`
 You should see a JSON welcome message.
 
 ## Database Setup
@@ -233,6 +234,9 @@ You should see a JSON welcome message.
 ## Base URL
 If you run the PHP built-in server from the project root, the base URL is:
 - `http://127.0.0.1:8080/api`
+
+Welcome endpoint:
+- `GET http://127.0.0.1:8080/api`
 
 A sample endpoint URL is:
 - `http://127.0.0.1:8080/api/foods/random`
@@ -256,6 +260,34 @@ If the token is missing or invalid, the API returns:
 
 ## Full Endpoint Documentation
 Each endpoint is documented below with exact request details.
+
+---
+
+### GET /api
+**Endpoint:**
+GET /api
+
+**Description:**
+Returns the public welcome message for the API.
+
+**Required headers:**
+- No authentication required for this endpoint
+- `Accept: application/json`
+
+**Example request:**
+http://127.0.0.1:8080/api
+
+Thunder Client / Postman steps:
+- Create a new request → Method: `GET` → URL: `http://127.0.0.1:8080/api`
+- Click **Send** and inspect the JSON response shown below.
+
+**Example successful response:**
+```json
+{
+  "message": "Welcome to the Secured Filipino Cookbook API",
+  "note": "Use a valid Bearer token to access /api endpoints."
+}
+```
 
 ---
 
@@ -651,6 +683,7 @@ These are the exact steps another student should follow to verify the API.
      - JSON body should match the expected success or error structure described in the endpoint documentation.
 
 ### Test cases to run
+- `GET http://127.0.0.1:8080/api`
 - `GET http://127.0.0.1:8080/api/foods`
 - `GET http://127.0.0.1:8080/api/foods/11`
 - `GET http://127.0.0.1:8080/api/foods/random`

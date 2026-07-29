@@ -189,14 +189,49 @@ $app = AppFactory::create();
 // security ng api, unang nagrurun bago yung route handlers. Kung hindi valid yung token, 
 // hindi na siya makakapagaccess sa mga /api endpoints. tas magreereturn ng 401 Unauthorized response.
 $app->add(function (Request $request, $handler) {
-    $rateLimitResponse = enforceRateLimit($request);
-    if ($rateLimitResponse instanceof Response) {
-        return $rateLimitResponse;
+    $origin = $request->getHeaderLine('Origin');
+    $allowedOrigin = null;
+
+    if ($origin !== '') {
+        $parsedOrigin = parse_url($origin);
+        if ($parsedOrigin !== false && isset($parsedOrigin['scheme'], $parsedOrigin['host']) && in_array($parsedOrigin['scheme'], ['http', 'https'], true) && in_array($parsedOrigin['host'], ['127.0.0.1', 'localhost'], true)) {
+            $allowedOrigin = $origin;
+        }
+    }
+
+    $corsHeaders = [
+        'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers' => 'Authorization, Content-Type, Accept',
+    ];
+
+    if ($allowedOrigin !== null) {
+        $corsHeaders['Access-Control-Allow-Origin'] = $allowedOrigin;
+        $corsHeaders['Vary'] = 'Origin';
     }
 
     $path = $request->getUri()->getPath();
+    if ($request->getMethod() === 'OPTIONS' && strpos($path, '/api') === 0) {
+        $response = new \Slim\Psr7\Response();
+        foreach ($corsHeaders as $name => $value) {
+            $response = $response->withHeader($name, $value);
+        }
+        return $response->withStatus(200);
+    }
+
+    $rateLimitResponse = enforceRateLimit($request);
+    if ($rateLimitResponse instanceof Response) {
+        foreach ($corsHeaders as $name => $value) {
+            $rateLimitResponse = $rateLimitResponse->withHeader($name, $value);
+        }
+        return $rateLimitResponse;
+    }
+
     if (strpos($path, '/api') !== 0) { // dito, kung hindi nagstart sa /api yung path, hindi na niya ichecheck yung token.
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+        foreach ($corsHeaders as $name => $value) {
+            $response = $response->withHeader($name, $value);
+        }
+        return $response;
     }
 
     $authHeader = $request->getHeaderLine('Authorization'); // dito kinukuha yung Authorization header na galing sa client request. Dapat may format
@@ -208,10 +243,17 @@ $app->add(function (Request $request, $handler) {
         ];
         $body = json_encode($payload, JSON_UNESCAPED_SLASHES);
         $response->getBody()->write($body);
+        foreach ($corsHeaders as $name => $value) {
+            $response = $response->withHeader($name, $value);
+        }
         return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
     }
 
-    return $handler->handle($request);
+    $response = $handler->handle($request);
+    foreach ($corsHeaders as $name => $value) {
+        $response = $response->withHeader($name, $value);
+    }
+    return $response;
 });
 
 // Public root route redirects to the API welcome endpoint.

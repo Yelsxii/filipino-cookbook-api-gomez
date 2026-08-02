@@ -485,8 +485,7 @@ Returns the public welcome message and confirms that the API server is available
 | Required header | `Accept: application/json` |
 | Success status | `200 OK` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 {
@@ -495,7 +494,6 @@ Returns the public welcome message and confirms that the API server is available
 }
 ```
 
-</details>
 
 ---
 
@@ -510,8 +508,7 @@ Returns the complete food collection with category, origin, preparation instruct
 | Success status | `200 OK` |
 | Possible errors | `401 Unauthorized`, `429 Too Many Requests` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 [
@@ -533,7 +530,6 @@ Returns the complete food collection with category, origin, preparation instruct
 ]
 ```
 
-</details>
 
 ---
 
@@ -549,8 +545,7 @@ Returns the complete information for one food record.
 | Success status | `200 OK` |
 | Possible errors | `401 Unauthorized`, `404 Not Found`, `429 Too Many Requests` |
 
-<details>
-<summary>Example successful response</summary>
+**Example successful response:**
 
 ```json
 {
@@ -570,10 +565,8 @@ Returns the complete information for one food record.
 }
 ```
 
-</details>
 
-<details>
-<summary>Example not-found response</summary>
+**Example not-found response:**
 
 ```json
 {
@@ -582,7 +575,6 @@ Returns the complete information for one food record.
 }
 ```
 
-</details>
 
 ---
 
@@ -598,8 +590,7 @@ Performs a case-insensitive search and returns foods whose names contain the sup
 | Success status | `200 OK` |
 | Possible errors | `401 Unauthorized`, `429 Too Many Requests` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 [
@@ -620,7 +611,6 @@ Performs a case-insensitive search and returns foods whose names contain the sup
 ]
 ```
 
-</details>
 
 ---
 
@@ -635,8 +625,7 @@ Returns all available food categories.
 | Success status | `200 OK` |
 | Possible errors | `401 Unauthorized`, `429 Too Many Requests` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 [
@@ -651,7 +640,6 @@ Returns all available food categories.
 ]
 ```
 
-</details>
 
 ---
 
@@ -667,8 +655,7 @@ Returns only the foods assigned to the selected category.
 | Success status | `200 OK` |
 | Possible errors | `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429 Too Many Requests` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 [
@@ -690,10 +677,8 @@ Returns only the foods assigned to the selected category.
 ]
 ```
 
-</details>
 
-<details>
-<summary>Example invalid-parameter response</summary>
+**Example invalid-parameter response:**
 
 ```json
 {
@@ -702,7 +687,6 @@ Returns only the foods assigned to the selected category.
 }
 ```
 
-</details>
 
 ---
 
@@ -717,8 +701,7 @@ Returns one complete food record selected randomly from the database.
 | Success status | `200 OK` |
 | Possible errors | `401 Unauthorized`, `404 Not Found`, `429 Too Many Requests` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 {
@@ -739,7 +722,6 @@ Returns one complete food record selected randomly from the database.
 }
 ```
 
-</details>
 
 ---
 
@@ -754,8 +736,7 @@ Returns all ingredients available in the database.
 | Success status | `200 OK` |
 | Possible errors | `401 Unauthorized`, `429 Too Many Requests` |
 
-<details>
-<summary>Example response</summary>
+**Example response:**
 
 ```json
 [
@@ -770,7 +751,6 @@ Returns all ingredients available in the database.
 ]
 ```
 
-</details>
 
 ---
 
@@ -806,8 +786,7 @@ Creates a new food record and stores its selected ingredient relationships.
 }
 ```
 
-<details>
-<summary>Example successful response</summary>
+**Example successful response:**
 
 ```json
 {
@@ -816,10 +795,8 @@ Creates a new food record and stores its selected ingredient relationships.
 }
 ```
 
-</details>
 
-<details>
-<summary>Example validation error</summary>
+**Example validation error:**
 
 ```json
 {
@@ -828,7 +805,7 @@ Creates a new food record and stores its selected ingredient relationships.
 }
 ```
 
-</details>
+
 
 ## HTTP Status Codes
 - `200` Request completed successfully

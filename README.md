@@ -57,81 +57,165 @@ This project is a Slim PHP REST API for managing Filipino foods, categories, ori
 ## Optional API Enhancements
 
 ### Enhancement Description
-Two new endpoints were added to improve client workflows and make the API more useful for a future UI:
+
+Two additional GET endpoints were added to improve client workflows and provide more flexible access to the cookbook data:
+
 - `GET /api/foods/random`
 - `GET /api/categories/{id}/foods`
 
-A new security improvement was also added:
-- Basic rate limiting for API requests
+A basic rate-limiting security feature was also implemented for protected `/api` routes.
 
 ### Files Modified for Enhancements
+
 - `public/index.php`
 
 ### Endpoints Added
-- `GET /api/foods/random`
-- `GET /api/categories/{id}/foods`
 
-### Security Features Implemented
-- Basic rate limiting for API requests
+- `GET /api/foods/random` — returns one randomly selected Filipino food
+- `GET /api/categories/{id}/foods` — returns the foods assigned to a selected category
 
-### Testing the Enhancements (Thunder Client)
-Use Thunder Client in VS Code to create and run requests. For each request:
+### Security Feature Implemented
 
-- Click **New Request** → set the **Method** and **URL** → open **Headers** and add the required headers → click **Send**.
+- Basic rate limiting per client IP address
+- Maximum of 60 requests within a 60-second window
+- Requests beyond the limit return `429 Too Many Requests`
+- The counter is stored in a temporary JSON file so it remains available across separate HTTP requests
 
-- **Random food endpoint**
-  - Method: `GET`
-  - URL: `http://127.0.0.1:8080/api/foods/random`
-  - Headers:
-    - `Authorization: Bearer YOUR_API_TOKEN`
-    - `Accept: application/json`
-  - Expected response (HTTP 200):
-    ```json
-    {
-      "food_id": 14,
-      "food_name": "Bulalo",
-      "category_name": "Soup",
-      "origin_name": "Philippines",
-      "instructions": "Boil beef shank and bone marrow until tender. Add corn and vegetables, then simmer before serving.",
-      "ingredients": ["Beef shank","Bone marrow","Cabbage","Corn","Onion","Pechay","Peppercorn"]
-    }
-    ```
+### Testing the Enhancements
 
-- **Category foods endpoint**
-  - Method: `GET`
-  - URL: `http://127.0.0.1:8080/api/categories/1/foods` (replace `1` with a valid category id)
-  - Headers:
-    - `Authorization: Bearer YOUR_API_TOKEN`
-    - `Accept: application/json`
-  - Expected response (HTTP 200):
-    ```json
-    [
-      {
-        "food_id": 11,
-        "food_name": "Lumpiang Shanghai",
-        "category_name": "Appetizer",
-        "origin_name": "Philippines",
-        "instructions": "Mix ground pork, vegetables, and egg. Wrap in spring roll wrappers and deep-fry until golden brown.",
-        "ingredients": ["Carrots","Egg","Garlic","Ground pork","Onion","Spring roll wrapper"]
-      }
+Start the API from the project root before testing:
+
+```bash
+php -S 127.0.0.1:8080 -t public
+```
+
+For protected endpoints, include these headers:
+
+```text
+Authorization: Bearer YOUR_API_TOKEN
+Accept: application/json
+```
+
+#### Test the Random Food Endpoint
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods/random`
+- **Expected status:** `200 OK`
+- **Expected result:** One complete food record is returned. Repeating the request may return a different food.
+
+Example response:
+
+```json
+{
+  "food_id": 14,
+  "food_name": "Bulalo",
+  "category_name": "Soup",
+  "origin_name": "Philippines",
+  "instructions": "Boil beef shank and bone marrow until tender. Add corn and vegetables, then simmer before serving.",
+  "ingredients": [
+    "Beef shank",
+    "Bone marrow",
+    "Cabbage",
+    "Corn",
+    "Onion",
+    "Pechay",
+    "Peppercorn"
+  ]
+}
+```
+
+#### Test the Foods-by-Category Endpoint
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/categories/1/foods`
+- **Path parameter:** Replace `1` with an existing category ID.
+- **Expected status:** `200 OK`
+- **Expected result:** Only foods assigned to the selected category are returned.
+
+Example response:
+
+```json
+[
+  {
+    "food_id": 11,
+    "food_name": "Lumpiang Shanghai",
+    "category_name": "Appetizer",
+    "origin_name": "Philippines",
+    "instructions": "Mix ground pork, vegetables, and egg. Wrap in spring roll wrappers and deep-fry until golden brown.",
+    "ingredients": [
+      "Carrots",
+      "Egg",
+      "Garlic",
+      "Ground pork",
+      "Onion",
+      "Spring roll wrapper"
     ]
-    ```
+  }
+]
+```
 
-- **Quick rate-limit smoke test**
-  - Send several quick requests to a single endpoint (e.g., `GET /api/foods`) from Thunder Client using the same headers. If the rate limit is exceeded you should see a `429` response and a JSON error, for example:
-    ```json
-    {
-      "status": "error",
-      "message": "Too many requests. Rate limit exceeded."
-    }
-    ```
+#### Test the Rate Limiter
+
+The following procedure verifies that the first 60 requests from the same client are accepted within the active window and that the next request is rejected with HTTP `429`.
+
+1. Keep the API server running in one terminal.
+2. Open a second PowerShell terminal in the project root.
+3. Run the command below. It resets the previous local rate-limit counter, reads the token from `config.php`, and sends exactly 60 authenticated requests to `GET /api/categories`.
+
+```powershell
+Remove-Item "$env:TEMP\filipino_cookbook_rate_limit.json" -ErrorAction SilentlyContinue; $token = (php -r '$c = require "config.php"; echo $c["api_token"] ?? "";').Trim(); 1..60 | ForEach-Object { $code = curl.exe -s -o NUL -w "%{http_code}" -H "Authorization: Bearer $token" -H "Accept: application/json" "http://127.0.0.1:8080/api/categories"; Write-Host "Request $_ - Status $code" }
+```
+
+The terminal should end with results similar to:
+
+```text
+Request 58 - Status 200
+Request 59 - Status 200
+Request 60 - Status 200
+```
+
+4. Immediately create or open this request in Thunder Client:
+
+```text
+GET http://127.0.0.1:8080/api/categories
+```
+
+5. Add the same valid Bearer token and click **Send** once. This request becomes the 61st request in the current window.
+
+Expected status:
+
+```text
+429 Too Many Requests
+```
+
+Expected response:
+
+```json
+{
+  "status": "error",
+  "message": "Too many requests. Please try again later."
+}
+```
+
+After testing, either wait for the 60-second window to expire or reset the local counter:
+
+```powershell
+Remove-Item "$env:TEMP\filipino_cookbook_rate_limit.json" -ErrorAction SilentlyContinue
+```
 
 ### Enhancement Testing Screenshots
-Random food endpoint test:
+
+Random food endpoint:
+
 ![Random Food Endpoint Test](Screenshots/Random.png)
 
-Category foods endpoint test:
+Foods-by-category endpoint:
+
 ![Category Foods Endpoint Test](Screenshots/Category.png)
+
+Rate-limit security test:
+
+![Rate Limit Exceeded](Screenshots/RateLimit429.png)
 
 ## Repository Contents
 The repository contains:
@@ -643,159 +727,186 @@ Possible errors:
 - `500` Internal server error
 
 ## Testing Instructions
-These are the exact steps another student should follow to verify the API.
 
-1. Start the local server:
-   ```bash
-   php -S 127.0.0.1:8080 -t public
-   ```
+Follow these steps to verify the API after installation.
 
-2. Open Postman, Thunder Client, or use `curl` from a terminal.
-3. Create a new request and configure it precisely:
-   - **Method:** Choose the correct HTTP method for the endpoint.
-     - `GET` for read-only endpoints
-     - `POST` only for creating a new food record
-   - **URL:** Paste the full endpoint URL exactly.
-     - Example GET URLs:
-       - `http://127.0.0.1:8080/api/foods`
-       - `http://127.0.0.1:8080/api/foods/11`
-       - `http://127.0.0.1:8080/api/foods/random`
-     - Example POST URL:
-       - `http://127.0.0.1:8080/api/foods`
-   - **Headers:** Add the required headers for every request:
-     - `Authorization: Bearer YOUR_API_TOKEN`
-     - `Accept: application/json`
-     - For `POST` requests only: `Content-Type: application/json`
-   - **Body (POST only):** If the endpoint is `POST /api/foods`, switch to raw JSON and paste a valid payload.
-     ```json
-     {
-       "food_name": "New Dish",
-       "category_id": 1,
-       "origin_id": 1,
-       "instructions": "Prepare and cook.",
-       "ingredient_ids": [1, 2]
-     }
-     ```
-   - **Send:** Click `Send` or execute the equivalent `curl` command.
-   - **Verify the response:**
-     - Status code should be `200` or `201` for success.
-     - Response header should include `Content-Type: application/json`.
-     - JSON body should match the expected success or error structure described in the endpoint documentation.
+### 1. Start the API
 
-### Test cases to run
-- `GET http://127.0.0.1:8080/api`
-- `GET http://127.0.0.1:8080/api/foods`
-- `GET http://127.0.0.1:8080/api/foods/11`
-- `GET http://127.0.0.1:8080/api/foods/random`
-- `GET http://127.0.0.1:8080/api/foods/search/lumpia`
-- `GET http://127.0.0.1:8080/api/categories`
-- `GET http://127.0.0.1:8080/api/categories/1/foods`
-- `GET http://127.0.0.1:8080/api/ingredients`
-- `POST http://127.0.0.1:8080/api/foods` with a valid JSON body
-- `GET http://127.0.0.1:8080/api/foods` without the Authorization header to confirm `401`
+From the project root:
 
-### What to change in the local setup
-Open `config.php` and update:
+```bash
+php -S 127.0.0.1:8080 -t public
+```
+
+### 2. Choose a Testing Tool
+
+The endpoints may be tested using:
+
+- Thunder Client
+- Postman
+- `curl` or PowerShell
+
+### 3. Configure Protected Requests
+
+All protected `/api` requests require:
+
+```text
+Authorization: Bearer YOUR_API_TOKEN
+Accept: application/json
+```
+
+For `POST /api/foods`, also include:
+
+```text
+Content-Type: application/json
+```
+
+The token must match the `api_token` value in the local `config.php` file.
+
+### 4. Run the Endpoint Tests
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/api` | Confirm that the API is running |
+| `GET` | `/api/foods` | Retrieve all foods |
+| `GET` | `/api/foods/{id}` | Retrieve one food by ID |
+| `GET` | `/api/foods/search/{name}` | Search foods by name |
+| `GET` | `/api/categories` | Retrieve all categories |
+| `GET` | `/api/categories/{id}/foods` | Retrieve foods by category |
+| `GET` | `/api/foods/random` | Retrieve one random food |
+| `GET` | `/api/ingredients` | Retrieve all ingredients |
+| `POST` | `/api/foods` | Add a new food record |
+
+For each request, verify that:
+
+- the expected HTTP status code is returned;
+- the response has `Content-Type: application/json`;
+- the response body follows the documented JSON structure;
+- protected endpoints reject missing or invalid tokens;
+- invalid parameters and missing records return clear error messages.
+
+### 5. Verify the Rate Limiter
+
+Use the procedure under **Optional API Enhancements → Test the Rate Limiter**. The first 60 rapid requests should return `200`, and the next request within the same 60-second window should return `429 Too Many Requests`.
+
+### 6. Local Configuration
+
+Create `config.php` before running the API:
+
+Windows:
+
+```powershell
+copy config.example.php config.php
+```
+
+Linux or macOS:
+
+```bash
+cp config.example.php config.php
+```
+
+Update these values in `config.php`:
+
 - `db_host`
 - `db_name`
 - `db_user`
 - `db_pass`
 - `api_token`
 
-Use your own MySQL credentials and the same token value in requests.
-
-
-Quick reminder: copy `config.example.php` to `config.php` before running the server:
-
-Windows:
-```powershell
-copy config.example.php config.php
-```
-
-Linux / macOS:
-```bash
-cp config.example.php config.php
-```
+Use the same configured token when sending authenticated requests.
 
 ## Testing Evidence
 
-This section contains the required evidence that the API endpoints, authentication, validation, error handling, and optional enhancements were tested successfully.
-
+The screenshots below demonstrate successful endpoint responses, optional enhancements, authentication, validation, error handling, and rate limiting. Each screenshot should show the request method, URL, HTTP status, and JSON response while keeping private credentials out of view.
 
 ### Successful Endpoint Tests
 
 #### 1. API Welcome Endpoint
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api`
-- **Expected status:** `200 OK`
-- **Description:** Confirms that the API server is running and returns the Filipino Cookbook API welcome response.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api` |
+| Authentication | Not required |
+| Expected status | `200 OK` |
+| Expected result | The API returns its welcome message and confirms that protected endpoints require a valid token. |
 
 ![API Welcome Endpoint](Screenshots/Welcome.png)
 
+*Evidence: The public welcome endpoint responded successfully and confirmed that the API server was running.*
+
 #### 2. Retrieve All Foods
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/foods`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/Foods.png`
-- **Evidence description:** Confirms that the API returns the complete food collection with category, origin, instructions, and ingredient data.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/foods` |
+| Expected status | `200 OK` |
+| Expected result | The response contains the food collection with category, origin, instructions, and ingredient data. |
 
 ![Retrieve All Foods](Screenshots/Foods.png)
 
+*Evidence: The API returned the complete food collection in JSON format.*
+
 #### 3. Retrieve One Food by ID
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/foods/1`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/FoodDetails.png`
-- **Evidence description:** Confirms that a valid food ID returns the full details and ingredient list of one food record.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/foods/1` |
+| Expected status | `200 OK` |
+| Expected result | The response contains the complete record for the selected food ID. |
 
 ![Retrieve Food by ID](Screenshots/FoodDetails.png)
 
+*Evidence: A valid food ID returned one food record with its full ingredient list.*
+
 #### 4. Search Foods by Name
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/foods/search/adobo`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/FoodSearch.png`
-- **Evidence description:** Confirms that the case-insensitive food search endpoint returns records whose names match the supplied search term.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/foods/search/adobo` |
+| Expected status | `200 OK` |
+| Expected result | The response contains foods whose names match the supplied search term. |
 
 ![Search Foods by Name](Screenshots/FoodSearch.png)
 
+*Evidence: The search endpoint returned matching food records using a case-insensitive name search.*
+
 #### 5. Retrieve All Categories
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/categories`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/Categories.png`
-- **Evidence description:** Confirms that the API returns all available Filipino food categories.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/categories` |
+| Expected status | `200 OK` |
+| Expected result | The response contains all available food categories. |
 
 ![Retrieve All Categories](Screenshots/Categories.png)
 
+*Evidence: The API returned the complete category list in JSON format.*
+
 #### 6. Retrieve All Ingredients
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/ingredients`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/Ingredients.png`
-- **Evidence description:** Confirms that the API returns the complete ingredient list.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/ingredients` |
+| Expected status | `200 OK` |
+| Expected result | The response contains all ingredient records. |
 
 ![Retrieve All Ingredients](Screenshots/Ingredients.png)
 
+*Evidence: The API returned the complete ingredient list in JSON format.*
+
 #### 7. Add a New Food
 
-- **Method:** `POST`
-- **URL:** `http://127.0.0.1:8080/api/foods`
-- **Expected status:** `201 Created`
-- **Screenshot filename:** `Screenshots/AddFood.png`
-- **Evidence description:** Confirms that a valid JSON request creates a new food record and its ingredient relationships.
+| Test detail | Value |
+|---|---|
+| Request | `POST http://127.0.0.1:8080/api/foods` |
+| Expected status | `201 Created` |
+| Expected result | A new food record and its ingredient relationships are inserted successfully. |
 
-Use this sample raw JSON body:
+Use a raw JSON body containing valid category, origin, and ingredient IDs:
 
 ```json
 {
-  "food_name": "Thunder Client Test Dish",
+  "food_name": "API Test Dish",
   "category_id": 4,
   "origin_id": 4,
   "instructions": "Prepare the ingredients and cook until done.",
@@ -803,85 +914,79 @@ Use this sample raw JSON body:
 }
 ```
 
+Use a unique `food_name` when repeating the test.
+
 ![Add a New Food](Screenshots/AddFood.png)
 
----
+*Evidence: The API accepted valid JSON input and returned a successful resource-creation response.*
 
 ### Optional Enhancement Tests
 
 #### 8. Retrieve a Random Food
 
-- **Enhancement:** New endpoint
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/foods/random`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/Random.png`
-- **Evidence description:** Confirms that the optional random-food endpoint returns one complete food record selected from the database.
+| Test detail | Value |
+|---|---|
+| Enhancement | Additional GET endpoint |
+| Request | `GET http://127.0.0.1:8080/api/foods/random` |
+| Expected status | `200 OK` |
+| Expected result | One complete food record is selected and returned. |
 
 ![Random Food Endpoint Test](Screenshots/Random.png)
 
+*Evidence: The optional endpoint returned one randomly selected food with its complete details.*
+
 #### 9. Retrieve Foods by Category
 
-- **Enhancement:** New endpoint
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/categories/1/foods`
-- **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/Category.png`
-- **Evidence description:** Confirms that the optional category-food endpoint returns only the foods assigned to the selected category.
+| Test detail | Value |
+|---|---|
+| Enhancement | Additional GET endpoint |
+| Request | `GET http://127.0.0.1:8080/api/categories/1/foods` |
+| Expected status | `200 OK` |
+| Expected result | Only foods assigned to category ID `1` are returned. |
 
 ![Category Foods Endpoint Test](Screenshots/Category.png)
 
-#### 10. Basic Rate-Limit Test
+*Evidence: The optional endpoint filtered the food collection using the selected category ID.*
 
-- **Enhancement:** Security improvement
-- **Endpoint used:** `GET /api/foods`
-- **Configured limit:** More than 60 requests from the same client within 60 seconds
-- **Expected status after exceeding the limit:** `429 Too Many Requests`
-- **Screenshot filename:** `Screenshots/RateLimit429.png`
-- **Evidence description:** The completed screenshot must show that excessive requests are blocked and a JSON error response is returned.
+#### 10. Rate-Limit Security Test
 
-For a reliable rapid-request test in Windows PowerShell, replace `YOUR_API_TOKEN` with the token configured in `config.php`, then run:
+| Test detail | Value |
+|---|---|
+| Enhancement | Security improvement |
+| Endpoint used | `GET http://127.0.0.1:8080/api/categories` |
+| Configured limit | 60 requests per client IP within 60 seconds |
+| Expected result | Requests 1–60 return `200`; the next request returns `429 Too Many Requests`. |
+
+Run this command from a second Windows PowerShell terminal while the API server remains active:
 
 ```powershell
-$headers = @{
-    Authorization = "Bearer YOUR_API_TOKEN"
-    Accept = "application/json"
-}
+Remove-Item "$env:TEMP\filipino_cookbook_rate_limit.json" -ErrorAction SilentlyContinue; $token = (php -r '$c = require "config.php"; echo $c["api_token"] ?? "";').Trim(); 1..60 | ForEach-Object { $code = curl.exe -s -o NUL -w "%{http_code}" -H "Authorization: Bearer $token" -H "Accept: application/json" "http://127.0.0.1:8080/api/categories"; Write-Host "Request $_ - Status $code" }
+```
 
-1..65 | ForEach-Object {
-    try {
-        $response = Invoke-WebRequest `
-            -Uri "http://127.0.0.1:8080/api/foods" `
-            -Headers $headers `
-            -UseBasicParsing
+Immediately send one additional authenticated `GET /api/categories` request in Thunder Client.
 
-        Write-Host "Request $_ : $($response.StatusCode)"
-    }
-    catch {
-        $statusCode = $_.Exception.Response.StatusCode.value__
-        Write-Host "Request $_ : $statusCode"
-    }
+Expected response:
+
+```json
+{
+  "status": "error",
+  "message": "Too many requests. Please try again later."
 }
 ```
 
-After the command returns `429`, immediately send one more `GET /api/foods` request in Thunder Client and capture the visible `429` status and JSON response. Use only an actual response from the running API; do not create or edit the evidence manually.
-
 ![Rate Limit Exceeded](Screenshots/RateLimit429.png)
 
----
+*Evidence: The rate limiter blocked the request that exceeded the configured 60-request window and returned HTTP 429.*
 
 ### Common Error Response Tests
 
-These screenshots demonstrate that the API returns understandable JSON errors and appropriate HTTP status codes.
+#### 11. Missing or Invalid Bearer Token
 
-#### 1. Missing or Invalid Bearer Token
-
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/foods`
-- **How to reproduce:** Remove the `Authorization` header or use an incorrect token.
-- **Expected status:** `401 Unauthorized`
-- **Screenshot filename:** `Screenshots/Error401.png`
-- **Evidence description:** Confirms that protected endpoints reject requests that do not contain the correct Bearer token.
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/foods` |
+| Test condition | Remove the `Authorization` header or provide an incorrect token. |
+| Expected status | `401 Unauthorized` |
 
 Expected response:
 
@@ -894,14 +999,15 @@ Expected response:
 
 ![Unauthorized Request](Screenshots/Error401.png)
 
-#### 2. Food Record Not Found
+*Evidence: The API rejected a protected request that did not contain the correct Bearer token.*
 
-- **Method:** `GET`
-- **URL:** `http://127.0.0.1:8080/api/foods/99999`
-- **How to reproduce:** Use a food ID that does not exist while keeping the valid Authorization header.
-- **Expected status:** `404 Not Found`
-- **Screenshot filename:** `Screenshots/Error404.png`
-- **Evidence description:** Confirms that the API returns a clear not-found response for a missing food record.
+#### 12. Food Record Not Found
+
+| Test detail | Value |
+|---|---|
+| Request | `GET http://127.0.0.1:8080/api/foods/99999` |
+| Test condition | Use a food ID that does not exist while keeping a valid Bearer token. |
+| Expected status | `404 Not Found` |
 
 Expected response:
 
@@ -914,16 +1020,17 @@ Expected response:
 
 ![Food Not Found](Screenshots/Error404.png)
 
-#### 3. Invalid or Incomplete Food Data
+*Evidence: The API returned a clear not-found response for a missing food record.*
 
-- **Method:** `POST`
-- **URL:** `http://127.0.0.1:8080/api/foods`
-- **How to reproduce:** Send an incomplete request body, such as the example below with no `ingredient_ids`.
-- **Expected status:** `400 Bad Request`
-- **Screenshot filename:** `Screenshots/Error400.png`
-- **Evidence description:** Confirms that the API validates required input before inserting a food record.
+#### 13. Invalid or Incomplete Food Data
 
-Use this invalid raw JSON body:
+| Test detail | Value |
+|---|---|
+| Request | `POST http://127.0.0.1:8080/api/foods` |
+| Test condition | Omit a required field such as `ingredient_ids`. |
+| Expected status | `400 Bad Request` |
+
+Invalid example body:
 
 ```json
 {
@@ -945,18 +1052,19 @@ Expected response:
 
 ![Invalid Food Data](Screenshots/Error400.png)
 
+*Evidence: The API validated the required fields and rejected incomplete input before database insertion.*
+
 ### Evidence Summary
 
-The screenshots above provide evidence for:
+The screenshots verify:
 
-- Successful testing of every available API endpoint
-- Successful testing of the two optional endpoint enhancements
-- Bearer token authentication
-- Input validation and not-found handling
-- JSON response formatting
-- Successful resource creation
-- The rate-limit test procedure and its required `429` evidence
-
+- successful responses from every documented endpoint;
+- successful testing of both optional GET endpoints;
+- correct Bearer token authentication;
+- valid JSON response formatting;
+- successful resource creation;
+- input validation and not-found handling;
+- enforcement of the 60-request rate limit through an HTTP `429` response.
 
 ## Developer Information
 - Student Name: Lizhary Ylexis Gomez

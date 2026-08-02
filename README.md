@@ -4,43 +4,76 @@
 Filipino Cookbook API
 
 ## API Description
-This project is a Slim PHP REST API for managing Filipino foods, categories, origins, ingredients, and food-related records. It is designed for another student to install, configure, and consume from a driver or client application.
+
+> A secure and reusable REST API that transforms structured Filipino cookbook data into clear JSON resources for web, mobile, and other client applications.
+
+The **Filipino Cookbook API** is built with PHP, the Slim Framework, and MySQL. It provides organized access to Filipino food records, categories, origins, cooking instructions, and ingredients through protected REST endpoints. The project is designed to demonstrate practical API development, database integration, request validation, authentication, and client-side consumption in an educational setting.
+
+### API at a Glance
+
+| Area | Description |
+|---|---|
+| **Primary purpose** | Provide structured Filipino cookbook data through RESTful JSON endpoints |
+| **Data source** | A relational MySQL database containing foods, categories, origins, ingredients, and food-ingredient relationships |
+| **Client access** | Web interfaces, mobile applications, desktop clients, and API testing tools |
+| **Security** | Bearer token authentication for protected `/api` routes and basic request rate limiting |
+| **Response format** | JSON responses with appropriate HTTP status codes and understandable messages |
 
 ### Purpose of the API
-- Provide Filipino food information through JSON endpoints
-- Support future front-end or client applications
-- Demonstrate PHP Slim REST API development with token authentication
 
-### Type of Information Provided
-- Filipino food items and instructions
-- Food categories
-- Ingredient lists
-- Origins for foods
+The API was developed to:
+
+- make Filipino cookbook information accessible through consistent and reusable endpoints;
+- support the development of separate driver or client applications;
+- demonstrate how a PHP application can expose relational database records as JSON resources;
+- apply authentication, validation, error handling, and rate limiting in a working REST API; and
+- provide another student with a documented API that can be installed, tested, and integrated independently.
+
+### Information Available
+
+The API provides access to:
+
+- Filipino food names and preparation instructions;
+- food categories used to organize dishes;
+- origins associated with food records;
+- ingredient names and food-ingredient relationships; and
+- complete food details that combine category, origin, instructions, and ingredients.
 
 ### Intended Users
-- Students using the API for lab activities
-- Front-end developers building a client application
-- Anyone learning REST API integration with PHP and MySQL
 
-### Main Functions of the API
-- Retrieve all foods
-- Retrieve a single food by ID
-- Search foods by name
-- Retrieve foods by category
-- Retrieve a random food
-- Retrieve all categories and ingredients
-- Add a new food record
-- Authenticate requests using a Bearer token
+This API is suitable for:
 
-### Technologies Used
-- PHP
-- Slim Framework
-- MySQL
-- Composer
-- JSON
-- XAMPP or local web server
-- Postman or Thunder Client
-- Git and GitHub
+- students completing API integration and client-development activities;
+- front-end developers building a Filipino cookbook interface;
+- developers learning REST API consumption with PHP, JavaScript, or other client technologies; and
+- users who need a structured and searchable source of Filipino cookbook data.
+
+### Core Capabilities
+
+Through its available endpoints, the API can:
+
+- retrieve the complete food collection;
+- return the full details of a specific food record;
+- search foods by name;
+- retrieve foods under a selected category;
+- return a randomly selected Filipino food;
+- list all categories and ingredients;
+- create a new food record with related ingredients;
+- validate incoming request data; and
+- protect API resources using Bearer token authentication and basic rate limiting.
+
+### Technology Stack
+
+| Technology | Role in the Project |
+|---|---|
+| **PHP** | Implements the API logic and request handling |
+| **Slim Framework** | Defines routes, middleware, and HTTP responses |
+| **MySQL** | Stores foods, categories, origins, ingredients, and relationships |
+| **Composer** | Manages PHP dependencies and autoloading |
+| **JSON** | Provides the standard request and response data format |
+| **XAMPP or PHP Built-in Server** | Runs the API in a local development environment |
+| **Thunder Client or Postman** | Tests endpoints, headers, bodies, and responses |
+| **Git and GitHub** | Supports version control, documentation, and repository sharing |
 
 ## Features
 - List all foods with ingredients and category/origin details

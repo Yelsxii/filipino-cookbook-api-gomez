@@ -694,36 +694,6 @@ These are the exact steps another student should follow to verify the API.
 - `POST http://127.0.0.1:8080/api/foods` with a valid JSON body
 - `GET http://127.0.0.1:8080/api/foods` without the Authorization header to confirm `401`
 
-## Common Error Responses (examples)
-These JSON examples show typical error responses you can expect and how to reproduce them.
-
-- Unauthorized (missing/invalid token) — HTTP 401
-  ```json
-  {
-    "status": "error",
-    "message": "Unauthorized access. Valid API token is required."
-  }
-  ```
-  Reproduce: send any `/api` request without the `Authorization: Bearer <token>` header.
-
-- Not Found — HTTP 404
-  ```json
-  {
-    "status": "error",
-    "message": "Food not found"
-  }
-  ```
-  Reproduce: request a non-existing resource, for example `GET /api/foods/99999` (replace `99999` with an id that doesn't exist).
-
-- Rate limit exceeded — HTTP 429
-  ```json
-  {
-    "status": "error",
-    "message": "Too many requests. Please try again later."
-  }
-  ```
-  Reproduce: send many requests quickly to any `/api` endpoint (rate limit is configured in `public/index.php`).
-
 ### What to change in the local setup
 Open `config.php` and update:
 - `db_host`
@@ -747,8 +717,270 @@ Linux / macOS:
 cp config.example.php config.php
 ```
 
-## Testing Evidence (All Endpoints)
-Screenshots and test notes for all endpoints are available in the `Screenshots/` folder. The enhancement-specific screenshots are shown above in the **Optional API Enhancements** section.
+## Testing Evidence
+
+This section contains the required evidence that the API endpoints, authentication, validation, error handling, and optional enhancements were tested successfully. All screenshots must be saved inside the `Screenshots/` folder.
+
+### Screenshot Guidelines
+
+When taking each screenshot in Thunder Client:
+
+- Show the HTTP method, complete request URL, response status code, and JSON response body.
+- Keep enough of the Thunder Client window visible so the request and response can be identified.
+- Add `Authorization: Bearer YOUR_API_TOKEN` to protected `/api` requests.
+- Add `Accept: application/json` to GET requests.
+- Add `Content-Type: application/json` to POST requests.
+- Do not expose the real API token in the repository. Hide, blur, or crop the token value before saving the screenshot.
+- Use the exact screenshot filenames listed below so the images display correctly in this README.
+
+### Start the API Before Testing
+
+From the project root, run:
+
+```bash
+php -S 127.0.0.1:8080 -t public
+```
+
+Keep the terminal open while running the Thunder Client tests.
+
+---
+
+### Successful Endpoint Tests
+
+#### 1. API Welcome Endpoint
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/Welcome.png`
+- **Evidence description:** Confirms that the API server is running and returns the Filipino Cookbook API welcome response.
+
+![API Welcome Endpoint](Screenshots/Welcome.png)
+
+#### 2. Retrieve All Foods
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/Foods.png`
+- **Evidence description:** Confirms that the API returns the complete food collection with category, origin, instructions, and ingredient data.
+
+![Retrieve All Foods](Screenshots/Foods.png)
+
+#### 3. Retrieve One Food by ID
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods/1`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/FoodDetails.png`
+- **Evidence description:** Confirms that a valid food ID returns the full details and ingredient list of one food record.
+
+![Retrieve Food by ID](Screenshots/FoodDetails.png)
+
+#### 4. Search Foods by Name
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods/search/adobo`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/FoodSearch.png`
+- **Evidence description:** Confirms that the case-insensitive food search endpoint returns records whose names match the supplied search term.
+
+![Search Foods by Name](Screenshots/FoodSearch.png)
+
+#### 5. Retrieve All Categories
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/categories`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/Categories.png`
+- **Evidence description:** Confirms that the API returns all available Filipino food categories.
+
+![Retrieve All Categories](Screenshots/Categories.png)
+
+#### 6. Retrieve All Ingredients
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/ingredients`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/Ingredients.png`
+- **Evidence description:** Confirms that the API returns the complete ingredient list.
+
+![Retrieve All Ingredients](Screenshots/Ingredients.png)
+
+#### 7. Add a New Food
+
+- **Method:** `POST`
+- **URL:** `http://127.0.0.1:8080/api/foods`
+- **Expected status:** `201 Created`
+- **Screenshot filename:** `Screenshots/AddFood.png`
+- **Evidence description:** Confirms that a valid JSON request creates a new food record and its ingredient relationships.
+
+Use this sample raw JSON body:
+
+```json
+{
+  "food_name": "Thunder Client Test Dish",
+  "category_id": 4,
+  "origin_id": 4,
+  "instructions": "Prepare the ingredients and cook until done.",
+  "ingredient_ids": [18, 26, 40]
+}
+```
+
+![Add a New Food](Screenshots/AddFood.png)
+
+---
+
+### Optional Enhancement Tests
+
+#### 8. Retrieve a Random Food
+
+- **Enhancement:** New endpoint
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods/random`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/Random.png`
+- **Evidence description:** Confirms that the optional random-food endpoint returns one complete food record selected from the database.
+
+![Random Food Endpoint Test](Screenshots/Random.png)
+
+#### 9. Retrieve Foods by Category
+
+- **Enhancement:** New endpoint
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/categories/1/foods`
+- **Expected status:** `200 OK`
+- **Screenshot filename:** `Screenshots/Category.png`
+- **Evidence description:** Confirms that the optional category-food endpoint returns only the foods assigned to the selected category.
+
+![Category Foods Endpoint Test](Screenshots/Category.png)
+
+#### 10. Basic Rate-Limit Test
+
+- **Enhancement:** Security improvement
+- **Endpoint used:** `GET /api/foods`
+- **Configured limit:** More than 60 requests from the same client within 60 seconds
+- **Expected status after exceeding the limit:** `429 Too Many Requests`
+- **Screenshot filename:** `Screenshots/RateLimit429.png`
+- **Evidence description:** The completed screenshot must show that excessive requests are blocked and a JSON error response is returned.
+
+For a reliable rapid-request test in Windows PowerShell, replace `YOUR_API_TOKEN` with the token configured in `config.php`, then run:
+
+```powershell
+$headers = @{
+    Authorization = "Bearer YOUR_API_TOKEN"
+    Accept = "application/json"
+}
+
+1..65 | ForEach-Object {
+    try {
+        $response = Invoke-WebRequest `
+            -Uri "http://127.0.0.1:8080/api/foods" `
+            -Headers $headers `
+            -UseBasicParsing
+
+        Write-Host "Request $_ : $($response.StatusCode)"
+    }
+    catch {
+        $statusCode = $_.Exception.Response.StatusCode.value__
+        Write-Host "Request $_ : $statusCode"
+    }
+}
+```
+
+After the command returns `429`, immediately send one more `GET /api/foods` request in Thunder Client and capture the visible `429` status and JSON response. Use only an actual response from the running API; do not create or edit the evidence manually.
+
+![Rate Limit Exceeded](Screenshots/RateLimit429.png)
+
+---
+
+### Common Error Response Tests
+
+These screenshots demonstrate that the API returns understandable JSON errors and appropriate HTTP status codes.
+
+#### 1. Missing or Invalid Bearer Token
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods`
+- **How to reproduce:** Remove the `Authorization` header or use an incorrect token.
+- **Expected status:** `401 Unauthorized`
+- **Screenshot filename:** `Screenshots/Error401.png`
+- **Evidence description:** Confirms that protected endpoints reject requests that do not contain the correct Bearer token.
+
+Expected response:
+
+```json
+{
+  "status": "error",
+  "message": "Unauthorized access. Valid API token is required."
+}
+```
+
+![Unauthorized Request](Screenshots/Error401.png)
+
+#### 2. Food Record Not Found
+
+- **Method:** `GET`
+- **URL:** `http://127.0.0.1:8080/api/foods/99999`
+- **How to reproduce:** Use a food ID that does not exist while keeping the valid Authorization header.
+- **Expected status:** `404 Not Found`
+- **Screenshot filename:** `Screenshots/Error404.png`
+- **Evidence description:** Confirms that the API returns a clear not-found response for a missing food record.
+
+Expected response:
+
+```json
+{
+  "status": "error",
+  "message": "Food not found"
+}
+```
+
+![Food Not Found](Screenshots/Error404.png)
+
+#### 3. Invalid or Incomplete Food Data
+
+- **Method:** `POST`
+- **URL:** `http://127.0.0.1:8080/api/foods`
+- **How to reproduce:** Send an incomplete request body, such as the example below with no `ingredient_ids`.
+- **Expected status:** `400 Bad Request`
+- **Screenshot filename:** `Screenshots/Error400.png`
+- **Evidence description:** Confirms that the API validates required input before inserting a food record.
+
+Use this invalid raw JSON body:
+
+```json
+{
+  "food_name": "Incomplete Test Dish",
+  "category_id": 4,
+  "origin_id": 4,
+  "instructions": "This request intentionally has no ingredient IDs."
+}
+```
+
+Expected response:
+
+```json
+{
+  "status": "error",
+  "message": "Please provide food_name, category_id, origin_id, instructions, and ingredient_ids."
+}
+```
+
+![Invalid Food Data](Screenshots/Error400.png)
+
+### Evidence Summary
+
+The screenshots above provide evidence for:
+
+- Successful testing of every available API endpoint
+- Successful testing of the two optional endpoint enhancements
+- Bearer token authentication
+- Input validation and not-found handling
+- JSON response formatting
+- Successful resource creation
+- The rate-limit test procedure and its required `429` evidence
+
 
 ## Developer Information
 - Student Name: Lizhary Ylexis Gomez

@@ -76,35 +76,113 @@ function getRateLimitClientId(Request $request): string
 function enforceRateLimit(Request $request): ?Response
 {
     $path = $request->getUri()->getPath();
+
+    // Apply the rate limit only to API routes.
     if (strpos($path, '/api') !== 0) {
         return null;
     }
 
-    static $requestCounts = [];
     $clientId = getRateLimitClientId($request);
     $now = time();
+
+    // Allow 60 requests within 60 seconds per client IP.
     $windowSeconds = 60;
     $maxRequests = 60;
 
-    if (!isset($requestCounts[$clientId])) {
-        $requestCounts[$clientId] = ['count' => 0, 'start' => $now];
+    // Store the counters in the computer's temporary folder.
+    $rateLimitFile =
+        sys_get_temp_dir() .
+        DIRECTORY_SEPARATOR .
+        'filipino_cookbook_rate_limit.json';
+
+    $handle = fopen($rateLimitFile, 'c+');
+
+    /*
+     * Fail open when the temporary file cannot be accessed.
+     * This prevents the whole API from becoming unavailable.
+     */
+    if ($handle === false) {
+        return null;
     }
 
-    if ($requestCounts[$clientId]['start'] < $now - $windowSeconds) {
-        $requestCounts[$clientId] = ['count' => 0, 'start' => $now];
+    if (!flock($handle, LOCK_EX)) {
+        fclose($handle);
+        return null;
+    }
+
+    rewind($handle);
+    $contents = stream_get_contents($handle);
+
+    $requestCounts = $contents !== ''
+        ? json_decode($contents, true)
+        : [];
+
+    if (!is_array($requestCounts)) {
+        $requestCounts = [];
+    }
+
+    /*
+     * Remove expired client records so the temporary file
+     * does not keep unnecessary entries.
+     */
+    foreach ($requestCounts as $storedClientId => $record) {
+        $start = is_array($record)
+            ? (int) ($record['start'] ?? 0)
+            : 0;
+
+        if ($start < $now - $windowSeconds) {
+            unset($requestCounts[$storedClientId]);
+        }
+    }
+
+    if (!isset($requestCounts[$clientId])) {
+        $requestCounts[$clientId] = [
+            'count' => 0,
+            'start' => $now
+        ];
     }
 
     $requestCounts[$clientId]['count']++;
 
-    if ($requestCounts[$clientId]['count'] > $maxRequests) {
+    $isRateLimited =
+        $requestCounts[$clientId]['count'] > $maxRequests;
+
+    // Save the updated counters before returning the response.
+    rewind($handle);
+    ftruncate($handle, 0);
+    fwrite(
+        $handle,
+        json_encode(
+            $requestCounts,
+            JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+        )
+    );
+    fflush($handle);
+    flock($handle, LOCK_UN);
+    fclose($handle);
+
+    if ($isRateLimited) {
         $response = new \Slim\Psr7\Response();
+
         $payload = [
             'status' => 'error',
-            'message' => 'Too many requests. Please try again later.'
+            'message' =>
+                'Too many requests. Please try again later.'
         ];
-        $body = json_encode($payload, JSON_UNESCAPED_SLASHES);
-        $response->getBody()->write($body);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(429);
+
+        $response->getBody()->write(
+            json_encode(
+                $payload,
+                JSON_UNESCAPED_SLASHES
+            )
+        );
+
+        return $response
+            ->withHeader(
+                'Content-Type',
+                'application/json'
+            )
+            ->withStatus(429);
     }
 
     return null;

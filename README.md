@@ -719,31 +719,8 @@ cp config.example.php config.php
 
 ## Testing Evidence
 
-This section contains the required evidence that the API endpoints, authentication, validation, error handling, and optional enhancements were tested successfully. All screenshots must be saved inside the `Screenshots/` folder.
+This section contains the required evidence that the API endpoints, authentication, validation, error handling, and optional enhancements were tested successfully.
 
-### Screenshot Guidelines
-
-When taking each screenshot in Thunder Client:
-
-- Show the HTTP method, complete request URL, response status code, and JSON response body.
-- Keep enough of the Thunder Client window visible so the request and response can be identified.
-- Add `Authorization: Bearer YOUR_API_TOKEN` to protected `/api` requests.
-- Add `Accept: application/json` to GET requests.
-- Add `Content-Type: application/json` to POST requests.
-- Do not expose the real API token in the repository. Hide, blur, or crop the token value before saving the screenshot.
-- Use the exact screenshot filenames listed below so the images display correctly in this README.
-
-### Start the API Before Testing
-
-From the project root, run:
-
-```bash
-php -S 127.0.0.1:8080 -t public
-```
-
-Keep the terminal open while running the Thunder Client tests.
-
----
 
 ### Successful Endpoint Tests
 
@@ -752,8 +729,7 @@ Keep the terminal open while running the Thunder Client tests.
 - **Method:** `GET`
 - **URL:** `http://127.0.0.1:8080/api`
 - **Expected status:** `200 OK`
-- **Screenshot filename:** `Screenshots/Welcome.png`
-- **Evidence description:** Confirms that the API server is running and returns the Filipino Cookbook API welcome response.
+- **Description:** Confirms that the API server is running and returns the Filipino Cookbook API welcome response.
 
 ![API Welcome Endpoint](Screenshots/Welcome.png)
 

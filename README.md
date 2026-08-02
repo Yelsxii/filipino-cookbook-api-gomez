@@ -79,7 +79,6 @@ A basic rate-limiting security feature was also implemented for protected `/api`
 - Basic rate limiting per client IP address
 - Maximum of 60 requests within a 60-second window
 - Requests beyond the limit return `429 Too Many Requests`
-- The counter is stored in a temporary JSON file so it remains available across separate HTTP requests
 
 ### Testing the Enhancements
 
@@ -1071,4 +1070,4 @@ The screenshots verify:
  - Course and Section: Information Technology - 4B
 - GitHub Username: Yelsxii
 - Repository Link: https://github.com/Yelsxii/filipino-cookbook-api-gomez.git
-- Date Completed: 2026-07-22
+- Date Completed: 2026-08-02
